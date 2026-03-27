@@ -1,6 +1,6 @@
 {
   "name": "project-shared-memory-mcp",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "MCP server for project-scoped memory stored in .github/memories",
   "main": "dist/index.js",
   "bin": {

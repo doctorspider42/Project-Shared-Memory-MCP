@@ -1,0 +1,25 @@
+{
+  "name": "project-shared-memory-mcp",
+  "version": "1.0.1",
+  "description": "MCP server for project-scoped memory stored in .github/memories",
+  "main": "dist/index.js",
+  "bin": {
+    "project-shared-memory-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.3",
+    "ts-node": "^10.9.2"
+  }
+}

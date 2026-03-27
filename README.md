@@ -27,7 +27,7 @@ An MCP (Model Context Protocol) server that gives AI assistants persistent, **pr
 
 ### ✨ One-Click Install
 
-Install the MCP server directly into VS Code or VS Code Insiders:
+Install the MCP server directly into VS Code or VS Code Insiders (Select 'Install in Workspace'):
 
 [![Install in VS Code](https://img.shields.io/badge/VS_Code-Install_Project_Shared_Memory_MCP-0098FF?style=flat-square&logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect/mcp/install?name=project-shared-memory&config=%7B%22type%22%3A%22stdio%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22project-shared-memory-mcp%22%5D%2C%22env%22%3A%7B%22PROJECT_ROOT%22%3A%22%24%7BworkspaceFolder%7D%22%7D%7D)
 [![Install in VS Code Insiders](https://img.shields.io/badge/VS_Code_Insiders-Install_Project_Shared_Memory_MCP-24bfa5?style=flat-square&logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect/mcp/install?name=project-shared-memory&quality=insiders&config=%7B%22type%22%3A%22stdio%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22project-shared-memory-mcp%22%5D%2C%22env%22%3A%7B%22PROJECT_ROOT%22%3A%22%24%7BworkspaceFolder%7D%22%7D%7D)

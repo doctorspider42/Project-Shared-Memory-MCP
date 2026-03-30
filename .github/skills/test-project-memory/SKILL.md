@@ -1,16 +1,16 @@
 ---
-name: test-project-memory
-description: "Smoke-test the project-memory MCP server. Use when testing, validating, or verifying the project-memory MCP. Runs a full CRUD lifecycle: connectivity check, create, read, update (str_replace), insert, rename, delete — with verification after every mutation."
+name: test-project-shared-memory
+description: "Smoke-test the project-shared-memory MCP server. Use when testing, validating, or verifying the project-shared-memory MCP. Runs a full CRUD lifecycle: connectivity check, create, read, update (str_replace), insert, rename, delete — with verification after every mutation."
 argument-hint: "Optional: specify which MCP backend to test (local or docker). Defaults to whichever is reachable."
 ---
 
 # Test Project Memory MCP
 
-Run a structured smoke-test suite against the project-memory MCP server and report pass/fail for each step.
+Run a structured smoke-test suite against the project-shared-memory MCP server and report pass/fail for each step.
 
 ## Tools Under Test
 
-Use the `project-memory-local` or `project-memory-docker` MCP tools (whichever the user specifies, or whichever is reachable). The six operations tested:
+Use the `project-shared-memory-local` or `project-shared-memory-docker` MCP tools (whichever the user specifies, or whichever is reachable). The six operations tested:
 
 | Tool | Purpose |
 |------|---------|
@@ -73,7 +73,7 @@ Use the todo list to track progress. After every mutating call, immediately call
 After all stages complete, print a **Test Report** in this exact format:
 
 ```
-## Project Memory MCP — Test Report
+## Project Shared Memory MCP — Test Report
 
 | Stage | Test                        | Result |
 |-------|-----------------------------|--------|

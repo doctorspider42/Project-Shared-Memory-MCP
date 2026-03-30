@@ -1,6 +1,6 @@
 {
   "servers": {
-    "project-memory-docker": {
+    "project-shared-memory-docker": {
       "type": "stdio",
       "command": "docker",
       "args": [
@@ -15,7 +15,7 @@
         "PROJECT_ROOT": "/project"
       }
     },
-    "project-memory-local": {
+    "project-shared-memory-local": {
       "type": "stdio",
       "command": "node",
       "args": ["${workspaceFolder}/dist/index.js"],

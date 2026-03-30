@@ -30,7 +30,7 @@ No need to clone — just add this to `.vscode/mcp.json` in your project:
 ```json
 {
   "servers": {
-    "project-memory": {
+    "project-shared-memory": {
       "type": "stdio",
       "command": "npx",
       "args": ["-y", "project-shared-memory-mcp"],
@@ -57,7 +57,7 @@ Add to your VS Code **settings** (`.vscode/settings.json`):
 {
   "mcp": {
     "servers": {
-      "project-memory": {
+      "project-shared-memory": {
         "command": "node",
         "args": ["<path-to>/Project-Shared-Memory-MCP/dist/index.js"],
         "env": {
@@ -82,7 +82,7 @@ Register in VS Code MCP settings:
 {
   "mcp": {
     "servers": {
-      "project-memory": {
+      "project-shared-memory": {
         "command": "docker",
         "args": [
           "run", "-i", "--rm",

@@ -25,7 +25,7 @@ const MEMORIES_DIR = path.join(PROJECT_ROOT, '.github', 'memories');
 // ---------------------------------------------------------------------------
 
 const server = new McpServer({
-	name: 'project-memory',
+	name: 'project-shared-memory',
 	version: '1.0.0',
 });
 
@@ -116,7 +116,7 @@ async function main(): Promise<void> {
 	ensureMemoriesDir(MEMORIES_DIR);
 	const transport = new StdioServerTransport();
 	await server.connect(transport);
-	console.error('project-memory MCP server running on stdio');
+	console.error('project-shared-memory MCP server running on stdio');
 }
 
 main().catch((err) => {

@@ -320,7 +320,7 @@ server.tool(
 	'View contents of a memory file or list directory contents. Use path "/memories/" to see all memories.',
 	{
 		path: z.string().describe('The memory path, e.g. "/memories/" or "/memories/notes.md"'),
-		view_range: z.tuple([z.number(), z.number()]).optional().describe('Optional [start_line, end_line] (1-indexed) to view a specific range of lines'),
+		view_range: z.array(z.number()).min(2).max(2).optional().describe('Optional [start_line, end_line] (1-indexed) to view a specific range of lines'),
 	},
 	async ({ path: memoryPath, view_range }) => {
 		const result = doView(memoryPath, view_range as [number, number] | undefined);

@@ -1,0 +1,27 @@
+{
+  "servers": {
+    "project-memory-docker": {
+      "type": "stdio",
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "-v",
+        "${workspaceFolder}:/project",
+        "project-shared-memory-mcp:latest"
+      ],
+      "env": {
+        "PROJECT_ROOT": "/project"
+      }
+    },
+    "project-memory-local": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["${workspaceFolder}/dist/index.js"],
+      "env": {
+        "PROJECT_ROOT": "${workspaceFolder}"
+      }
+    }
+  }
+}

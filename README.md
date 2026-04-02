@@ -23,6 +23,13 @@ Install the MCP server directly into VS Code or VS Code Insiders:
 [![Install in VS Code](https://img.shields.io/badge/VS_Code-Install_Project_Shared_Memory_MCP-0098FF?style=flat-square&logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect/mcp/install?name=project-shared-memory&config=%7B%22type%22%3A%22stdio%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22project-shared-memory-mcp%22%5D%2C%22env%22%3A%7B%22PROJECT_ROOT%22%3A%22%24%7BworkspaceFolder%7D%22%7D%7D)
 [![Install in VS Code Insiders](https://img.shields.io/badge/VS_Code_Insiders-Install_Project_Shared_Memory_MCP-24bfa5?style=flat-square&logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect/mcp/install?name=project-shared-memory&quality=insiders&config=%7B%22type%22%3A%22stdio%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22project-shared-memory-mcp%22%5D%2C%22env%22%3A%7B%22PROJECT_ROOT%22%3A%22%24%7BworkspaceFolder%7D%22%7D%7D)
 
+#### 🐳 Docker
+
+[![Install in VS Code (Docker)](https://img.shields.io/badge/VS_Code-Install_with_Docker-0098FF?style=flat-square&logo=docker&logoColor=white)](https://insiders.vscode.dev/redirect/mcp/install?name=project-shared-memory&config=%7B%22type%22%3A%22stdio%22%2C%22command%22%3A%22docker%22%2C%22args%22%3A%5B%22run%22%2C%22-i%22%2C%22--rm%22%2C%22-v%22%2C%22%24%7BworkspaceFolder%7D%3A%2Fproject%22%2C%22node%3A22-alpine%22%2C%22npx%22%2C%22-y%22%2C%22project-shared-memory-mcp%22%5D%7D)
+[![Install in VS Code Insiders (Docker)](https://img.shields.io/badge/VS_Code_Insiders-Install_with_Docker-24bfa5?style=flat-square&logo=docker&logoColor=white)](https://insiders.vscode.dev/redirect/mcp/install?name=project-shared-memory&quality=insiders&config=%7B%22type%22%3A%22stdio%22%2C%22command%22%3A%22docker%22%2C%22args%22%3A%5B%22run%22%2C%22-i%22%2C%22--rm%22%2C%22-v%22%2C%22%24%7BworkspaceFolder%7D%3A%2Fproject%22%2C%22node%3A22-alpine%22%2C%22npx%22%2C%22-y%22%2C%22project-shared-memory-mcp%22%5D%7D)
+
+> Requires only Docker — uses the official `node:22-alpine` image and installs the package via `npx` at runtime.
+
 ### Option A — Run with NPX
 
 No need to clone — just add this to `.vscode/mcp.json` in your project:

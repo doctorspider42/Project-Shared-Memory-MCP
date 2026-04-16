@@ -28,7 +28,18 @@ export function resolveMemoryPath(memoriesDir: string, memoryPath: string): stri
 	const segments = memoryPath.split('/').filter(s => s.length > 0);
 	// segments[0] === 'memories', rest are relative
 	const relative = segments.slice(1);
-	return path.join(memoriesDir, ...relative);
+	const scope = getScope(memoryPath);
+
+	if (scope === 'repo' || scope === 'session') {
+		// /memories/repo/x.md → memoriesDir/repo/x.md (scope prefix stays in path)
+		if (relative.length === 0) {
+			return memoriesDir;
+		}
+		return path.join(memoriesDir, ...relative);
+	}
+
+	// User scope: /memories/x.md → memoriesDir/user/x.md
+	return path.join(memoriesDir, 'user', ...relative);
 }
 
 export function normalizePath(p: string): string {
@@ -37,6 +48,22 @@ export function normalizePath(p: string): string {
 
 export function isMemoriesRoot(p: string): boolean {
 	return normalizePath(p) === '/memories/';
+}
+
+export type MemoryScope = 'user' | 'repo' | 'session';
+
+export function isRepoPath(memoryPath: string): boolean {
+	return normalizePath(memoryPath).startsWith('/memories/repo/');
+}
+
+export function isSessionPath(memoryPath: string): boolean {
+	return normalizePath(memoryPath).startsWith('/memories/session/');
+}
+
+export function getScope(memoryPath: string): MemoryScope {
+	if (isRepoPath(memoryPath)) return 'repo';
+	if (isSessionPath(memoryPath)) return 'session';
+	return 'user';
 }
 
 export function formatLineNumber(line: number): string {

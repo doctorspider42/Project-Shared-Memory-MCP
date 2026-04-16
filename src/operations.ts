@@ -4,6 +4,7 @@ import {
 	validatePath,
 	resolveMemoryPath,
 	isMemoriesRoot,
+	getScope,
 	formatFileContent,
 	makeSnippet,
 	formatLineNumber,
@@ -23,7 +24,7 @@ export function doView(memoriesDir: string, memoryPath: string, viewRange?: [num
 
 	if (isMemoriesRoot(memoryPath)) {
 		ensureMemoriesDir(memoriesDir);
-		return listDirectory(memoriesDir, memoryPath, resolved);
+		return listMemoriesRoot(memoriesDir);
 	}
 
 	if (!fs.existsSync(resolved)) {
@@ -102,6 +103,58 @@ export function listDirectory(memoriesDir: string, memoryPath: string, resolved:
 		return `Here are the files and directories up to 2 levels deep in ${memoryPath}, excluding hidden items:\n${lines.join('\n')}`;
 	}
 	return lines.join('\n');
+}
+
+export function listMemoriesRoot(memoriesDir: string): string {
+	const lines: string[] = [];
+	const userDir = path.join(memoriesDir, 'user');
+	const repoDir = path.join(memoriesDir, 'repo');
+	const sessionDir = path.join(memoriesDir, 'session');
+
+	// Scope directories
+	for (const [dir, name] of [[repoDir, 'repo'], [sessionDir, 'session']] as const) {
+		if (fs.existsSync(dir)) {
+			const entries = fs.readdirSync(dir).filter(e => !e.startsWith('.'));
+			if (entries.length > 0) {
+				lines.push(`${name}/`);
+				const sub = listDirectory(memoriesDir, `/memories/${name}`, dir, 2, 1);
+				if (sub) {
+					lines.push(sub);
+				}
+			}
+		}
+	}
+
+	// User files (displayed as if directly under /memories/)
+	if (fs.existsSync(userDir)) {
+		const entries = fs.readdirSync(userDir, { withFileTypes: true })
+			.filter(e => !e.name.startsWith('.'))
+			.sort((a, b) => {
+				if (a.isDirectory() && !b.isDirectory()) return -1;
+				if (!a.isDirectory() && b.isDirectory()) return 1;
+				return a.name.localeCompare(b.name);
+			});
+
+		for (const entry of entries) {
+			const childResolved = path.join(userDir, entry.name);
+			if (entry.isDirectory()) {
+				lines.push(`${entry.name}/`);
+				const sub = listDirectory(memoriesDir, `/memories/${entry.name}`, childResolved, 2, 1);
+				if (sub) {
+					lines.push(sub);
+				}
+			} else {
+				const stat = fs.statSync(childResolved);
+				lines.push(`${stat.size}\t/memories/${entry.name}`);
+			}
+		}
+	}
+
+	if (lines.length === 0) {
+		return 'No memories found.';
+	}
+
+	return `Here are the files and directories up to 2 levels deep in /memories/, excluding hidden items:\n${lines.join('\n')}`;
 }
 
 export function doCreate(memoriesDir: string, memoryPath: string, fileText: string): string {

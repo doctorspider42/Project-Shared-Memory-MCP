@@ -5,6 +5,9 @@ import {
 	resolveMemoryPath,
 	normalizePath,
 	isMemoriesRoot,
+	isRepoPath,
+	isSessionPath,
+	getScope,
 	formatLineNumber,
 	formatFileContent,
 	makeSnippet,
@@ -69,24 +72,39 @@ describe('validatePath', () => {
 describe('resolveMemoryPath', () => {
 	const memoriesDir = path.join('fake', 'project', '.github', 'memories');
 
-	it('maps /memories/notes.md to memoriesDir/notes.md', () => {
+	it('maps /memories/notes.md to memoriesDir/user/notes.md', () => {
 		const result = resolveMemoryPath(memoriesDir, '/memories/notes.md');
-		expect(result).toBe(path.join(memoriesDir, 'notes.md'));
+		expect(result).toBe(path.join(memoriesDir, 'user', 'notes.md'));
 	});
 
-	it('maps /memories/sub/dir/file.md to nested path', () => {
+	it('maps /memories/sub/dir/file.md to nested user path', () => {
 		const result = resolveMemoryPath(memoriesDir, '/memories/sub/dir/file.md');
-		expect(result).toBe(path.join(memoriesDir, 'sub', 'dir', 'file.md'));
+		expect(result).toBe(path.join(memoriesDir, 'user', 'sub', 'dir', 'file.md'));
 	});
 
-	it('maps /memories (root) to memoriesDir itself', () => {
+	it('maps /memories (root) to memoriesDir/user', () => {
 		const result = resolveMemoryPath(memoriesDir, '/memories');
-		expect(result).toBe(memoriesDir);
+		expect(result).toBe(path.join(memoriesDir, 'user'));
 	});
 
-	it('maps /memories/ (root with slash) to memoriesDir itself', () => {
+	it('maps /memories/ (root with slash) to memoriesDir/user', () => {
 		const result = resolveMemoryPath(memoriesDir, '/memories/');
-		expect(result).toBe(memoriesDir);
+		expect(result).toBe(path.join(memoriesDir, 'user'));
+	});
+
+	it('maps /memories/repo/conv.md to memoriesDir/repo/conv.md', () => {
+		const result = resolveMemoryPath(memoriesDir, '/memories/repo/conv.md');
+		expect(result).toBe(path.join(memoriesDir, 'repo', 'conv.md'));
+	});
+
+	it('maps /memories/repo to memoriesDir/repo', () => {
+		const result = resolveMemoryPath(memoriesDir, '/memories/repo');
+		expect(result).toBe(path.join(memoriesDir, 'repo'));
+	});
+
+	it('maps /memories/session/progress.md to memoriesDir/session/progress.md', () => {
+		const result = resolveMemoryPath(memoriesDir, '/memories/session/progress.md');
+		expect(result).toBe(path.join(memoriesDir, 'session', 'progress.md'));
 	});
 });
 
@@ -214,5 +232,71 @@ describe('makeSnippet', () => {
 		expect(result).toContain('    14\tL14');
 		expect(result).not.toContain('     5\t');
 		expect(result).not.toContain('    15\t');
+	});
+});
+
+// ---------------------------------------------------------------------------
+// isRepoPath
+// ---------------------------------------------------------------------------
+
+describe('isRepoPath', () => {
+	it('returns true for /memories/repo/file.md', () => {
+		expect(isRepoPath('/memories/repo/file.md')).toBe(true);
+	});
+
+	it('returns true for /memories/repo (no trailing slash)', () => {
+		expect(isRepoPath('/memories/repo')).toBe(true);
+	});
+
+	it('returns true for /memories/repo/', () => {
+		expect(isRepoPath('/memories/repo/')).toBe(true);
+	});
+
+	it('returns false for /memories/repo.md (file named repo)', () => {
+		expect(isRepoPath('/memories/repo.md')).toBe(false);
+	});
+
+	it('returns false for /memories/notes.md', () => {
+		expect(isRepoPath('/memories/notes.md')).toBe(false);
+	});
+});
+
+// ---------------------------------------------------------------------------
+// isSessionPath
+// ---------------------------------------------------------------------------
+
+describe('isSessionPath', () => {
+	it('returns true for /memories/session/progress.md', () => {
+		expect(isSessionPath('/memories/session/progress.md')).toBe(true);
+	});
+
+	it('returns true for /memories/session', () => {
+		expect(isSessionPath('/memories/session')).toBe(true);
+	});
+
+	it('returns false for /memories/notes.md', () => {
+		expect(isSessionPath('/memories/notes.md')).toBe(false);
+	});
+});
+
+// ---------------------------------------------------------------------------
+// getScope
+// ---------------------------------------------------------------------------
+
+describe('getScope', () => {
+	it('returns repo for /memories/repo/file.md', () => {
+		expect(getScope('/memories/repo/file.md')).toBe('repo');
+	});
+
+	it('returns session for /memories/session/file.md', () => {
+		expect(getScope('/memories/session/file.md')).toBe('session');
+	});
+
+	it('returns user for /memories/notes.md', () => {
+		expect(getScope('/memories/notes.md')).toBe('user');
+	});
+
+	it('returns user for /memories/', () => {
+		expect(getScope('/memories/')).toBe('user');
 	});
 });

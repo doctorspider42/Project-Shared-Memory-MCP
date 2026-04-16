@@ -7,6 +7,8 @@ An MCP (Model Context Protocol) server that gives AI assistants persistent, **pr
 ## Features
 
 - **Project-scoped** — memories live in `.github/memories/` inside your repo
+- **Three memory scopes** — user, repo, and session memories with separate storage
+- **VS Code compatible** — same `/memories/` path API as the built-in VS Code Copilot memory tool
 - **Version-controlled** — commit and share context with your team
 - **Full CRUD** — view, create, edit (string replace / insert), rename, and delete memory files
 - **Path-safe** — validates all paths and blocks traversal attacks
@@ -106,14 +108,40 @@ The container expects the project to be mounted at `/project` (the default `PROJ
 
 ## How It Works
 
-All memory paths are virtual and start with `/memories/`. The server maps them to `.github/memories/` inside the project root. For example:
+All memory paths are virtual and start with `/memories/`. The server maps them to `.github/memories/` inside the project root, organized by scope:
+
+### Memory Scopes
+
+| Scope | Virtual Path | Storage Path | Purpose |
+|---|---|---|---|
+| **User** | `/memories/notes.md` | `.github/memories/user/notes.md` | Personal notes, preferences, patterns — persistent across all projects |
+| **Repo** | `/memories/repo/conventions.md` | `.github/memories/repo/conventions.md` | Repository conventions, build commands, project structure facts |
+| **Session** | `/memories/session/progress.md` | `.github/memories/session/progress.md` | Current task context, in-progress notes, temporary working state |
+
+This matches the [VS Code Copilot memory tool](https://github.com/microsoft/vscode-copilot-chat) API, so the paths are interchangeable.
+
+### Examples
 
 ```
-/memories/notes.md  →  <project>/.github/memories/notes.md
-/memories/session/  →  <project>/.github/memories/session/
+/memories/               →  lists all memories (merged view across scopes)
+/memories/notes.md       →  .github/memories/user/notes.md
+/memories/repo/          →  .github/memories/repo/
+/memories/session/ctx.md →  .github/memories/session/ctx.md
 ```
+
+When listing `/memories/`, user files appear at root level while `repo/` and `session/` show as scope directories — no implementation detail leaks.
 
 You can instruct the AI to store notes, decisions, conventions, or any other context — and it will persist across sessions.
+
+### Recommended `.gitignore`
+
+User and session memories are personal — add them to `.gitignore` so only repo-scoped memories are shared with the team:
+
+```gitignore
+# Personal AI memories (not shared)
+.github/memories/user/
+.github/memories/session/
+```
 
 ## Available Tools
 
